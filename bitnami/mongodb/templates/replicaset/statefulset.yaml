@@ -518,7 +518,11 @@ spec:
         {{- end }}
         {{- end }}
         {{- end }}
-  {{- if not .Values.persistence.enabled }}
+  {{- if .Values.persistence.existingClaim }}
+        - name: datadir
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.existingClaim }}
+  {{- else if not .Values.persistence.enabled }}
         - name: datadir
           {{- if .Values.persistence.medium }}
           emptyDir:
